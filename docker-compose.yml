@@ -1,0 +1,99 @@
+namenode:
+  image: hadoop
+  command: [
+      "hdfs",
+      "namenode",
+      "-Ddfs.namenode.datanode.registration.ip-hostname-check=false"
+  ]
+  #container_name: namenode
+  hostname: namenode
+  expose:
+    - 50070
+    - 50090
+    - 8020
+    - 9000
+  ports:
+    - 50070:50070
+
+
+
+datanode1:
+  image: hadoop
+  command: [
+      "hdfs",
+      "datanode"
+  ]
+  #container_name: datanode1
+  links:
+    - namenode
+  expose:
+    - 50010
+    - 50020
+    - 50075
+
+datanode2:
+  image: hadoop
+  command: [
+    "hdfs",
+    "datanode"
+  ]
+  #container_name: datanode2
+  links:
+    - namenode
+  expose:
+    - 50010
+    - 50020
+    - 50075
+
+resourcemanager:
+  image: hadoop
+  command: [
+      "yarn",
+      "resourcemanager"
+  ]
+  #container_name: resourcemanager
+  hostname: resourcemanager
+  expose:
+    - 8030
+    - 8031
+    - 8032
+    - 8033
+    - 8040
+    - 8042
+    - 8088
+  ports:
+    - 8088:8088
+
+nodemanager1:
+  image: hadoop
+  command: [
+      "yarn",
+      "nodemanager"
+  ]
+  #container_name: nodemanager1
+  links:
+    - resourcemanager
+  expose:
+    - 8030
+    - 8031
+    - 8032
+    - 8033
+    - 8042
+    - 8088
+
+nodemanager2:
+  image: hadoop
+  command: [
+      "yarn",
+      "nodemanager"
+  ]
+  #container_name: nodemanager2
+  links:
+    - resourcemanager
+  expose:
+    - 8030
+    - 8031
+    - 8032
+    - 8033
+    - 8042
+    - 8088
